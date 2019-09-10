@@ -16,8 +16,8 @@ bool comp (pair<string, double> a, pair<string, double> b) {
 }
 
 int main(int argv, char** argc) {
-    ifstream input("input.txt");
-    ofstream output("output.csv");
+    ifstream input(argc[1]);
+    ofstream output(argc[2]);
 
     map <string, int> word_count;
     int all_words_count = 0;
@@ -62,7 +62,7 @@ int main(int argv, char** argc) {
     for (auto i : word_count) {
         frequencies.emplace_back(make_pair(i.first, (double) i.second / all_words_count));
     }
-    
+
     sort (frequencies.rbegin(), frequencies.rend(), comp);
 
     for (auto i : frequencies) {
