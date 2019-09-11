@@ -25,8 +25,8 @@ void update_count (map <string, int>* m, string* s) {
 }
 
 int main(int argv, char** argc) {
-    ifstream input("input.txt");
-    ofstream output("output.csv");
+    ifstream input(argc[1]);
+    ofstream output(argc[2]);
 
     map <string, int> word_count;
     int all_words_count = 0;
