@@ -15,9 +15,18 @@ bool comp (pair<string, double> a, pair<string, double> b) {
     return a.second < b.second;
 }
 
+void update_count (map <string, int>* m, string* s) {
+    if (m->find(*s) == m->end()) {
+        (*m)[*s] = 1;
+    }
+    else {
+        (*m)[*s]++;
+    }
+}
+
 int main(int argv, char** argc) {
-    ifstream input(argc[1]);
-    ofstream output(argc[2]);
+    ifstream input("input.txt");
+    ofstream output("output.csv");
 
     map <string, int> word_count;
     int all_words_count = 0;
@@ -25,35 +34,25 @@ int main(int argv, char** argc) {
     string str;
     while (!input.eof()) {
         getline(input, str, ' ');
-        vector <string> words_in_line;
-        int vec_index = 0;
         bool in_word = false;
+        string cur_str = "";
         for (int i = 0; i < str.size(); ++i) {
             if (is_correct_char(str[i])) {
-                if (in_word) {
-                    words_in_line[vec_index].push_back(str[i]);
-                }
-                else {
-                    words_in_line.emplace_back("");
-                    words_in_line[vec_index].push_back(str[i]);
+                cur_str += tolower(str[i]);
+                if (!in_word) {
                     in_word = true;
                     all_words_count++;
                 }
             }
-            else {
-                if (in_word) {
-                    in_word = false;
-                    vec_index++;
-                }
+            else if (in_word) {
+                update_count(&word_count, &cur_str);
+                in_word = false;
+                cur_str = "";
             }
         }
-        for (auto i : words_in_line) {
-            if (word_count.find(i) == word_count.end()) {
-                word_count[i] = 1;
-            }
-            else {
-                word_count[i]++;
-            }
+        if (cur_str != "") {
+            update_count(&word_count, &cur_str);
+            cur_str = "";
         }
     }
 
